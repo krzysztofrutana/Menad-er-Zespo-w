@@ -36,30 +36,37 @@ namespace Menadzer_Zespołów.Utils
                     {
                         case 1:
                             monthView[0] = new DayModel(firstDayOfMonth);
+                            monthView[0].ItsDayInCurrentMonth = true;
                             numberOfFirstDay = 0;
                             break;
                         case 2:
                             monthView[1] = new DayModel(firstDayOfMonth);
+                            monthView[1].ItsDayInCurrentMonth = true;
                             numberOfFirstDay = 1;
                             break;
                         case 3:
                             monthView[2] = new DayModel(firstDayOfMonth);
+                            monthView[2].ItsDayInCurrentMonth = true;
                             numberOfFirstDay = 2;
                             break;
                         case 4:
                             monthView[3] = new DayModel(firstDayOfMonth);
+                            monthView[3].ItsDayInCurrentMonth = true;
                             numberOfFirstDay = 3;
                             break;
                         case 5:
                             monthView[4] = new DayModel(firstDayOfMonth);
+                            monthView[4].ItsDayInCurrentMonth = true;
                             numberOfFirstDay = 4;
                             break;
                         case 6:
                             monthView[5] = new DayModel(firstDayOfMonth);
+                            monthView[5].ItsDayInCurrentMonth = true;
                             numberOfFirstDay = 5;
                             break;
                         case 0:
                             monthView[6] = new DayModel(firstDayOfMonth);
+                            monthView[6].ItsDayInCurrentMonth = true;
                             numberOfFirstDay = 6;
                             break;
                         default:
@@ -72,6 +79,14 @@ namespace Menadzer_Zespołów.Utils
 
                     firstDayOfMonth = firstDayOfMonth.AddDays(1);
                     monthView[i] = new DayModel(firstDayOfMonth);
+                    if(dateTimeNow.Month == firstDayOfMonth.Month)
+                    {
+                        monthView[i].ItsDayInCurrentMonth = true;
+                    }
+                    else
+                    {
+                        monthView[i].ItsDayInCurrentMonth = false;
+                    }
 
                 }
             }
@@ -83,6 +98,7 @@ namespace Menadzer_Zespołów.Utils
                 {
                     firstDayOfMonth = firstDayOfMonth.AddDays(-1);
                     monthView[i] = new DayModel(firstDayOfMonth);
+                    monthView[i].ItsDayInCurrentMonth = false;
                 }
             }
             Debug.Print("Model kalendarz utworzony");

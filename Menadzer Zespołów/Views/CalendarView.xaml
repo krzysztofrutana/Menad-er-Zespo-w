@@ -5,13 +5,18 @@
     xmlns:cvm="clr-namespace:Menadzer_Zespołów.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Menadzer_Zespołów.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:conv="clr-namespace:Menadzer_Zespołów.Converters"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <UserControl.DataContext>
         <cvm:CalendarViewModel />
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <conv:BoolToFontWeightConverter x:Key="BoolToFontWeightConverter"/>
+    </UserControl.Resources>
     <Grid x:Name="GridContent" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -22,13 +27,48 @@
         <StackPanel
             Grid.Row="0"
             Margin="0,5,10,5"
-            HorizontalAlignment="Right"
+            HorizontalAlignment="Center"
             Orientation="Horizontal">
             <Button
-                Background="#FF1D1AB0"
+                Background="Transparent"
                 BorderBrush="Transparent"
-                Command="{Binding DataContext.showAddNewEventView , RelativeSource={RelativeSource AncestorType=Window}}"
-                Content="Dodaj nowe wydarzenie" />
+                Cursor="Hand"
+                Foreground="Black"
+                HorizontalAlignment="Left"
+                Command="{Binding ChangeMonthToPrevious}">
+                <materialDesign:PackIcon
+                    Width="30"
+                    Height="30"
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center"
+                    Kind="ArrowLeft" />
+            </Button>
+            <Button
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Foreground="Black"
+                Content="{Binding NameOfCurrentMonth}">
+            </Button>
+            <Button
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Content="{Binding CurrentYear}"
+                Foreground="Black" Cursor="Hand">
+            </Button>
+            <Button
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Cursor="Hand"
+                Foreground="Black"
+                Command="{Binding ChangeMonthToNext}">
+                <materialDesign:PackIcon
+                    Width="30"
+                    Height="30"
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center"
+                    Kind="ArrowRight" />
+            </Button>
+
         </StackPanel>
         <Grid
             Grid.Row="1"
@@ -79,7 +119,8 @@
                         Background="White"
                         Content="{Binding DayOfMonth}"
                         FontSize="13"
-                        Foreground="Black" />
+                        Foreground="Black" 
+                        FontWeight="{Binding Path=ItsDayInCurrentMonth, Converter={StaticResource BoolToFontWeightConverter}}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

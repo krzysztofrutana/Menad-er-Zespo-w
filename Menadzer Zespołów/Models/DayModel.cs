@@ -39,6 +39,26 @@ namespace Menadzer_Zespołów.Models
             }
         }
 
+        public int GetYear
+        {
+            get
+            {
+                return Date.Year;
+            }
+        }
+
+        public String NameOfMonth
+        {
+            get
+            {
+                var culture = new System.Globalization.CultureInfo("pl-PL");
+                string dayName = culture.DateTimeFormat.GetMonthName(Date.Month);
+
+                return char.ToUpper(dayName[0]) + dayName.Substring(1);
+            }
+        }
+        public bool ItsDayInCurrentMonth { get; set; }
+
         public DayModel(DateTime date)
         {
             this.Date = date;

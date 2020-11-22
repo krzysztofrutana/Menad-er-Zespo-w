@@ -54,9 +54,7 @@ namespace Menadzer_Zespołów.ViewModels
         public MainWindowViewModel()
         {
             CurrentWindowState = WindowState.Normal;
-            calendarView = new CalendarView();
-            eventListView = new EventListView();
-            addNewEventListView = new AddNewEventListView();
+            
             showBarInCalendarMenuButton = false;
             showBarInEventListMenuButton = false;
             showBarInAddNewEventMenuButton = false;
@@ -88,6 +86,7 @@ namespace Menadzer_Zespołów.ViewModels
                         showBarInCalendarMenuButton = true;
                         showBarInEventListMenuButton = false;
                         showBarInAddNewEventMenuButton = false;
+                        calendarView = new CalendarView();
                         SelectedView = calendarView;
                     }, null);
                 }
@@ -108,6 +107,7 @@ namespace Menadzer_Zespołów.ViewModels
                         showBarInCalendarMenuButton = false;
                         showBarInEventListMenuButton = true;
                         showBarInAddNewEventMenuButton = false;
+                        eventListView = new EventListView();
                         SelectedView = eventListView;
                     }, null);
                 }
@@ -128,6 +128,7 @@ namespace Menadzer_Zespołów.ViewModels
                         showBarInCalendarMenuButton = false;
                         showBarInEventListMenuButton = false;
                         showBarInAddNewEventMenuButton = true;
+                        addNewEventListView = new AddNewEventListView();
                         SelectedView = addNewEventListView;
                     }, null);
                 }
