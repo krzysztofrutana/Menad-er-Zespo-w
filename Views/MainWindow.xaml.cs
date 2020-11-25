@@ -26,6 +26,7 @@ namespace Menadzer_Zespołów
         {
             InitializeComponent();
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+
         }
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)

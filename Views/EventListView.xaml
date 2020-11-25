@@ -10,6 +10,9 @@
     <UserControl.DataContext>
         <elvm:EventListViewModel/>
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
     <Grid>
         <DataGrid ItemsSource="{Binding EventsList}" IsReadOnly="True" CanUserAddRows="False" AutoGenerateColumns="False">
             <DataGrid.Columns>
@@ -18,6 +21,6 @@
                 <DataGridTextColumn Header="Data" Binding="{Binding Date}"/>
             </DataGrid.Columns>
         </DataGrid>
-        
+        <ProgressBar IsIndeterminate="True" Width="300" Height="8" Visibility="{Binding ShowLoadingScreen, Converter={StaticResource BoolToVisibilityConverter}}"/>
     </Grid>
 </UserControl>

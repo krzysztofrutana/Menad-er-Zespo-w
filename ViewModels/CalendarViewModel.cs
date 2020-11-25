@@ -7,19 +7,28 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Menadzer_Zespołów.ViewModels
 {
     public class CalendarViewModel : ViewModelBase
     {
-        private DayModel[] _calendarModel;
+        private DayModel[] _CalendarModel;
 
-        public DayModel[] calendarModel
+        public DayModel[] CalendarModel
         {
-            get { return _calendarModel; }
-            set { _calendarModel = value;
-                OnPropertyChanged("calendarModel");
+            get { return _CalendarModel; }
+            set
+            {
+                _CalendarModel = value;
+                if (WeekNames == null)
+                {
+                    WeekNames = CalendarMonthModelBuild.GenerateWeekNameList(value);
+                }
+                SetPropertyForCalendarHeader();
+                ShowLoadingScreen = false;
+                OnPropertyChanged("CalendarModel");
             }
         }
 
@@ -35,15 +44,16 @@ namespace Menadzer_Zespołów.ViewModels
             }
         }
 
-        private List<DayModel> _weekNames;
+        private List<DayModel> _WeekNames;
 
-        public List<DayModel> weekNames
+        public List<DayModel> WeekNames
         {
-            get { return _weekNames; }
+            get { return _WeekNames; }
             set
             {
-                _weekNames = value;
-                OnPropertyChanged("calendarModel");
+                _WeekNames = value;
+                ShowYearButton = true;
+                OnPropertyChanged(nameof(WeekNames));
             }
         }
 
@@ -63,7 +73,7 @@ namespace Menadzer_Zespołów.ViewModels
 
         private int _CurrentYear;
         public int CurrentYear
-        { 
+        {
             get
             {
                 return _CurrentYear;
@@ -75,30 +85,58 @@ namespace Menadzer_Zespołów.ViewModels
             }
         }
 
+        private Boolean _ShowLoadingScreen;
+        public Boolean ShowLoadingScreen
+        {
+            get { return _ShowLoadingScreen; }
+            set
+            {
+                _ShowLoadingScreen = value;
+                OnPropertyChanged(nameof(ShowLoadingScreen));
+            }
+        }
+
+        private Boolean _ShowYearButton;
+        public Boolean ShowYearButton
+        {
+            get { return _ShowYearButton; }
+            set
+            {
+                _ShowYearButton = value;
+                OnPropertyChanged(nameof(ShowYearButton));
+            }
+        }
+
         public CalendarViewModel()
         {
+            if(CalendarModel == null)
+            {
+                ShowYearButton = false;
+            }
             SettingsCalendarView(DateTime.Now);
         }
 
         private void SettingsCalendarView(DateTime date)
         {
             CurrentUsedDateTimeForMakeModel = date;
-            calendarModel = CalendarMonthModelBuild.Create(date);
-            weekNames = CalendarMonthModelBuild.GenerateWeekNameList(calendarModel);
-            SetPropertyForCalendarHeader();
+            CreateCalendarModel(date);
+
         }
+
 
         private void SetPropertyForCalendarHeader()
         {
-            for (int i = 0; i < calendarModel.Length; i++)
-            {
-                if (calendarModel[i].DayOfMonth == 1)
-                {
-                    NameOfCurrentMonth = calendarModel[i].NameOfMonth;
-                    CurrentYear = calendarModel[i].GetYear;
-                    break;
-                }
-            }
+
+            NameOfCurrentMonth = CalendarModel[15].NameOfMonth;
+            CurrentYear = CalendarModel[21].GetYear;
+
+        }
+
+        private void CreateCalendarModel(DateTime date)
+        {
+            ShowLoadingScreen = true;
+            Task taskA = new Task(() => CalendarModel = CalendarMonthModelBuild.Create(date));
+            taskA.Start();
         }
 
 
@@ -114,7 +152,7 @@ namespace Menadzer_Zespołów.ViewModels
                     _ChangeMonthToPrevious = new RelayCommand(parametr =>
                     {
                         CurrentUsedDateTimeForMakeModel = CurrentUsedDateTimeForMakeModel.AddMonths(-1);
-                        calendarModel = CalendarMonthModelBuild.Create(CurrentUsedDateTimeForMakeModel);
+                        CreateCalendarModel(CurrentUsedDateTimeForMakeModel);
                         SetPropertyForCalendarHeader();
                     }, null);
                 }
@@ -133,7 +171,7 @@ namespace Menadzer_Zespołów.ViewModels
                     _ChangeMonthToNext = new RelayCommand(parametr =>
                     {
                         CurrentUsedDateTimeForMakeModel = CurrentUsedDateTimeForMakeModel.AddMonths(1);
-                        calendarModel = CalendarMonthModelBuild.Create(CurrentUsedDateTimeForMakeModel);
+                        CreateCalendarModel(CurrentUsedDateTimeForMakeModel);
                         SetPropertyForCalendarHeader();
                     }, null);
                 }

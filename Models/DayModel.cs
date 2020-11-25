@@ -57,11 +57,16 @@ namespace Menadzer_Zespołów.Models
                 return char.ToUpper(dayName[0]) + dayName.Substring(1);
             }
         }
+
+        public string Type { get; set; }
+
+
         public bool ItsDayInCurrentMonth { get; set; }
 
-        public DayModel(DateTime date)
+        public DayModel(DateTime date, string type = null)
         {
             this.Date = date;
+            this.Type = type; 
         }
     }
 }

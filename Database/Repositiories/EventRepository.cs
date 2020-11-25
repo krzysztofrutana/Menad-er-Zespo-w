@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Menadzer_Zespołów.Database.Repositiories
 {
@@ -29,8 +29,21 @@ namespace Menadzer_Zespołów.Database.Repositiories
         {
             using (var db = new MenadzerZespolowDBContext())
             {
+                var result = db.Events.ToList();
+                return result;
+            }
+        }
+
+        // Same problem as above
+        public List<EventModel> GetEventByData(DateTime date)
+        {
+
+            DateTime temp = date.Date;
+            using (var db = new MenadzerZespolowDBContext())
+            {
                 var result = (from b in db.Events
-                                    select b).ToList();
+                              where b.Date == temp
+                              select b).ToList();
                 return result;
             }
         }
